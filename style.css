@@ -51,70 +51,93 @@ html, body {
 }
 
 /* --- Dialogue & Choices --- */
+/* --- Game Screen --- */
 #game-container {
     display: none;
     position: relative;
-    width: 100%;
-    height: 100vh; /* บังคับความสูงเต็มจอ */
+    width: 100vw;   /* ใช้ vw เพื่อให้เต็มความกว้างจอ */
+    height: 100vh;  /* ใช้ vh เพื่อให้เต็มความสูงจอ */
     background-size: cover;
     background-position: center;
     overflow: hidden;
 }
 
-.choice-btn {
-    width: 70%;
-    max-width: 450px;
-    background: rgba(255, 255, 255, 0.75);
-    color: var(--cozy-brown);
-    padding: 18px 40px;
-    border-radius: 50px;
-    text-align: center;
-    cursor: pointer;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    margin: 10px 0;
+/* --- Layer สำหรับจัดการตำแหน่งกล่องข้อความ --- */
+.ui-layer {
+    position: absolute;
+    bottom: 30px;    /* ดันลงมาอยู่ด้านล่างสุด ห่างจากขอบ 30px */
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    z-index: 100;
 }
 
+/* ชื่อตัวละคร (Name Tag) */
+#name-tag {
+    align-self: flex-start;
+    margin-left: 7.5%;
+    margin-bottom: 8px;
+    font-weight: bold;
+    font-size: 1.2rem;
+    padding: 12px 40px;
+    background: var(--cozy-brown);
+    color: white;
+    border-radius: 30px;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+/* กล่องข้อความ (Textbox) */
 #textbox {
     width: 85%;
-    min-height: 140px;
-    background: var(--glass-white);
-    padding: 25px 40px;
-    border-radius: 15px;
+    min-height: 160px;
+    background: var(--glass-white); /* 85% ที่คุณตั้งไว้ */
+    padding: 30px 45px;
+    border-radius: 25px; /* มนสวยงามตามรูป 4.jpg */
     color: var(--cozy-brown);
     font-size: 1.2rem;
-    line-height: 1.6;
+    line-height: 1.7;
+    cursor: pointer;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
+    border: none;
+    box-sizing: border-box;
 }
 
-/* --- Choices --- */
+/* --- ส่วนของตัวเลือก (Choices) --- */
 #choice-container {
     position: absolute;
-    top: 40%;
+    top: 45%;           /* อยู่ตรงกลางหน้าจอ */
+    left: 50%;
+    transform: translate(-50%, -50%); /* จัดกึ่งกลางเป๊ะๆ */
     width: 100%;
-    display: none;
+    display: none;      /* ซ่อนไว้จนกว่าจะมีตัวเลือก */
     flex-direction: column;
     align-items: center;
     gap: 15px;
-    z-index: 20;
+    z-index: 200;
 }
 
 .choice-btn {
-    width: 70%;
+    width: 320px;       /* ปรับขนาดให้พอดีเหมือนในรูปตัวอย่าง */
     background: var(--glass-white);
-    max-width: 450px;
     color: var(--cozy-brown);
-    padding: 18px 40px;
+    padding: 16px 25px;
     text-align: center;
-    border-radius: 50px;
+    border-radius: 50px; /* ทรงมนยาว (Pill Shape) */
     cursor: pointer;
-    text-shadow: none;
     border: 1px solid rgba(255,255,255,0.5);
     transition: all 0.2s ease-in-out;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+    font-weight: 500;
 }
 
 .choice-btn:hover {
     background: white;
-    transform: translateY(-2px) scale(1.02);
+    transform: translateY(-3px) scale(1.03);
+    box-shadow: 0 6px 20px rgba(0,0,0,0.15);
 }
+
 
 /* Utils */
 .hidden { display: none !important; }

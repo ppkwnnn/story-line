@@ -141,3 +141,15 @@ html, body {
 
 /* Utils */
 .hidden { display: none !important; }
+
+#character-sprite {
+    position: absolute;
+    bottom: 0;         /* ยืนบนขอบล่าง */
+    left: 50%;         /* จัดกลางจอ */
+    transform: translateX(-50%); /* ดันกลับมาให้กึ่งกลางเป๊ะ */
+    height: 90vh;      /* ความสูง 90% ของจอภาพ */
+    z-index: 5;        /* อยู่หน้าพื้นหลัง (z-index 0) แต่อยู่หลัง UI (z-index 100) */
+    pointer-events: none; /* ป้องกันไม่ให้รูปตัวละครบังการคลิกที่ Textbox */
+    opacity: 0;
+    transition: opacity 0.5s ease; /* เพิ่มความละมุนเวลาปรากฏตัว */
+}

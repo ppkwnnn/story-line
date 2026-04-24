@@ -53,21 +53,30 @@ const gameData = {
         ]
     },
     'choice_temp': {
-        dialogue: { name: 'KY', text: 'เมนูนี้ดีเลยนะครับ แล้วอยากรับเป็นแบบร้อนหรือเย็นดีครับ?' },
+        bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
+        dialogue: { name: 'KY', text: 'เมนูนี้ดีเลยนะครับ แล้วอยากรับเป็นแบบร้อนรือเย็นดีครับ?' },
         choices: [
             { text: 'แบบร้อน', next: 'choice_snack' },
             { text: 'แบบเย็น', next: 'choice_snack' }
         ]
     },
     'choice_snack': {
+        bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
         dialogue: { name: 'KY', text: 'ได้เลยครับ...แล้วรับขนมทานคู่กันทานเพิ่มด้วยไหมครับ??' },
         choices: [
-            { text: 'สตอเบอร์รี่ช๊อตเค้ก', next: 6, val: 'สตอเบอร์รี่ช๊อตเค้ก' },
-            { text: 'บลูชีสพาย', next: 6, val: 'บลูชีสพาย' },
-            { text: 'ครัวซองต์', next: 6, val: 'ครัวซองต์' },
-            { text: 'โดนัทช็อกโกแลต', next: 6, val: 'โดนัทช็อกโกแลต' },
-            { text: 'แซนวิช', next: 6, val: 'แซนวิช' }
+            { text: 'สตอเบอร์รี่ช๊อตเค้ก' },
+            { text: 'บลูชีสพาย' },
+            { text: 'ครัวซองต์' },
+            { text: 'โดนัทช็อกโกแลต' },
+            { text: 'แซนวิช' }
+        ],
+        bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
+        dialogue: [
+            { name: 'KY', text: 'ทวนรายการสักครู่นะครับ ของคุณลูกค้าจะเป็น [DRINK] กับ [SNACK] นะครับ' },
+            { name: 'Y', text: 'ใช่ค่ะ ตามนี้เลย' },
+            { name: 'KY', text: 'รับทราบครับผม รอเครื่องดื่มกับขนมสักครู่นะครับ เดี๋ยวผมนำไปเสิร์ฟให้ครับ' }
         ]
+        next: 6
     },
     6: {
         bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
@@ -89,8 +98,8 @@ const gameData = {
         bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
         showChar: true,
         dialogue: [
-            { name: 'Y', text: 'ฟังดูน่าสนุกดีนะคะ อยากรู้เหมือนกันค่ะลองทายดูสิคะ' },
-            { name: 'KY', text: 'ได้เลยครับ สำหรับคนที่เลือก [DRINK] บ่งบอกว่าคุณเป็นคนที่[FORTUNE]' },
+            { name: 'Y', text: 'ฟังดูน่าสนุกดีนะคะ อยากรู้เหมือนกันค่ะ ลองทายดูสิคะ' },
+            { name: 'KY', text: 'ได้เลยครับ สำหรับคนที่เลือก [DRINK] บ่งบอกว่าคุณเป็นคนที่ [FORTUNE]' },
             { name: 'Y', text: 'โห... แอบแม่นจนน่าตกใจเลยนะคะเนี่ย' },
             { name: 'KY', text: 'ฮะฮะ จริงเหรอครับ? สงสัยผมจะทายถูกเพราะเห็นรอยยิ้มของคุณแน่เลย อ้อจริงสิ มื้อนี้ผมเลี้ยงคุณเองนะ' },
             { name: 'Y', text: 'เอ๋? จะดีเหรอคะ? ทำไมถึงใจดีแบบนี้ล่ะคะ?' },
@@ -224,31 +233,48 @@ function processStep() {
     }
 }
 
+let typingTimer; // เพิ่มตัวแปรสำหรับเก็บ timer
+let currentFullText = ""; // เก็บข้อความเต็มไว้สำหรับแสดงตอน skip
+
 function showText(text, name) {
+    const characterSprite = document.getElementById('character-sprite');
     isTyping = true;
     const nameTag = document.getElementById('name-tag');
     const textContent = document.getElementById('text-content');
     
+    // 1. จัดการ Name Tag
+    nameTag.style.display = name ? 'block' : 'none';
+    if(name) nameTag.innerText = name;
+
+    // 2. จัดการตัวละคร (Character Sprite)
+    // ถ้ามีชื่อคนพูด (ไม่ว่าจะเป็น KY หรือ Y) ให้แสดงตัวละครค้างไว้
     if (name) {
-        nameTag.innerText = name;
-        nameTag.style.display = 'block';
-    } else {
-        nameTag.style.display = 'none';
+        // เช็คก่อนว่าคนพูดคือ KY หรือเปล่า (หรือจะให้แสดงค้างตั้งแต่ฉากที่มี KY ครั้งแรก)
+        // ถ้าคุณต้องการให้โชว์แค่ตอนที่ KY ยืนอยู่ แม้เรา (Y) จะพูดด้วย ก็ใช้เงื่อนไขนี้ได้เลย
+        characterSprite.style.display = 'block';
+        characterSprite.style.opacity = '1';
+    } 
+    // ถ้าไม่มีชื่อ (บทบรรยาย/Narration) ให้ซ่อนตัวละคร
+    else {
+        characterSprite.style.display = 'none';
+        characterSprite.style.opacity = '0';
     }
 
-    let processedText = text.replace('[DRINK]', selectedDrink)
-                            .replace('[SNACK]', selectedSnack)
-                            .replace('[FORTUNE]', fortunes[selectedDrink] || '');
+    // 3. ประมวลผลข้อความ (เหมือนเดิม)
+    currentFullText = text.replace('[DRINK]', selectedDrink)
+                          .replace('[SNACK]', selectedSnack)
+                          .replace('[FORTUNE]', fortunes[selectedDrink] || '');
 
     textContent.innerHTML = "";
     let i = 0;
-    const speed = 60;
     
+    clearTimeout(typingTimer);
+
     function type() {
-        if (i < text.length) {
-            textContent.innerHTML += text.charAt(i);
+        if (i < currentFullText.length) {
+            textContent.innerHTML += currentFullText.charAt(i);
             i++;
-            setTimeout(type, speed);
+            typingTimer = setTimeout(type, 30); 
         } else {
             isTyping = false;
         }
@@ -285,26 +311,28 @@ function showChoices(choices) {
 }
 
 function nextStep() {
-    if (isTyping) return;
-    
+    const textContent = document.getElementById('text-content');
+
+    if (isTyping) {
+        // --- ส่วนที่เพิ่มเข้ามาสำหรับ Skip ---
+        clearTimeout(typingTimer); // หยุดการพิมพ์ทีละตัว
+        textContent.innerHTML = currentFullText; // แสดงข้อความเต็มทันที
+        isTyping = false; // เปลี่ยนสถานะเป็นพิมพ์จบแล้ว
+        return; // จบฟังก์ชันแค่นี้ (ยังไม่เปลี่ยนฉาก)
+    }
+
+    // --- Logic เปลี่ยนฉากเดิม ---
     const scene = gameData[currentScene];
-    
     if (Array.isArray(scene.dialogue) && dialogueIndex < scene.dialogue.length - 1) {
         dialogueIndex++;
         processStep();
-        return;
-    }
-
-    if (scene.choices && document.getElementById('choice-container').style.display === 'none') {
+    } else if (scene.choices) {
         showChoices(scene.choices);
-        return;
-    }
-
-    if (scene.next) {
-        if(scene.next === 'MENU') location.reload();
-        else {
-            currentScene = scene.next;
-            renderScene();
+    } else if (scene.next) {
+        if (scene.next === 'MENU') location.reload();
+        else { 
+            currentScene = scene.next; 
+            renderScene(); 
         }
     }
 }

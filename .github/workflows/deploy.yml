@@ -2,39 +2,28 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: ["main"] # หรือชื่อ branch ที่คุณใช้
 
 permissions:
-  contents: write
+  contents: read
   pages: write
   id-token: write
 
 jobs:
-  build-and-deploy:
+  deploy:
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
+      - name: Checkout
         uses: actions/checkout@v4
-
-      - name: Set up Node.js
-        if: exists('package.json')
-        uses: actions/setup-node@v4
+      - name: Setup Pages
+        uses: actions/configure-pages@v4
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v3
         with:
-          node-version: '20'
-
-      - name: Install dependencies
-        if: exists('package.json')
-        run: npm install
-
-      - name: Build site
-        if: exists('package.json')
-        run: npm run build
-
+          path: '.' # ใส่จุด ถ้าไฟล์ index.html อยู่หน้าแรกสุดของโปรเจกต์
       - name: Deploy to GitHub Pages
-        uses: peaceiris/actions-gh-pages@v4
-        with:
-          publish_dir: ./public
-          publish_branch: gh-pages
-          user_name: github-actions[bot]
-          user_email: github-actions[bot]@users.noreply.github.com
+        id: deployment
+        uses: actions/deploy-pages@v4

@@ -5,24 +5,22 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Gentle Steam, Dearly Belov'd</title>
     <link href="https://fonts.googleapis.com/css2?family=Fahkwang:wght@300;400;500;600&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="style.css"> 
 </head>
 <body>
 
     <div id="main-menu">
-        <div class="credit-btn" onclick="alert('ผู้สร้าง: Gentle Steam Team\nFont: Fahkwang\nPowered by Gemini')">?</div>
+        <div class="credit-btn" onclick="alert('ผู้สร้าง: Gentle Steam Team')">?</div>
         <img src="https://img2.pic.in.th/-181_20260411152816.md.png" alt="Logo" class="logo">
         <div class="menu-buttons">
-            <div class="btn" onclick="startGame()">เริ่มเกม</div>
-            <div class="btn" onclick="alert('หน้ารวมคำอวยพร (Coming Soon)')">ดูหน้ารวมคำอวยพร</div>
+            <button class="btn" onclick="startGame()">เริ่มเกม</button>
+            <button class="btn" onclick="alert('เร็วๆ นี้')">ดูหน้ารวมคำอวยพร</button>
         </div>
     </div>
 
     <div id="game-container">
         <img id="character-sprite" src="https://img1.pic.in.th/images/Screenshot_.th.png" alt="KY">
-        
         <div id="choice-container"></div>
-
         <div class="ui-layer">
             <div id="name-tag"></div>
             <div id="textbox" onclick="nextStep()">

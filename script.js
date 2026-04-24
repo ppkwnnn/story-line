@@ -75,7 +75,7 @@ const gameData = {
             { name: 'KY', text: 'ทวนรายการสักครู่นะครับ ของคุณลูกค้าจะเป็น [DRINK] กับ [SNACK] นะครับ' },
             { name: 'Y', text: 'ใช่ค่ะ ตามนี้เลย' },
             { name: 'KY', text: 'รับทราบครับผม รอเครื่องดื่มกับขนมสักครู่นะครับ เดี๋ยวผมนำไปเสิร์ฟให้ครับ' }
-        ]
+        ],
         next: 6
     },
     6: {
@@ -177,8 +177,14 @@ let selectedSnack = "";
 let isTyping = false;
 
 function startGame() {
+    console.log("Game Starting..."); // ใส่ไว้เช็คใน Console ว่าฟังก์ชันทำงานไหม
+    
+    // ซ่อนเมนู และ โชว์หน้าจอเกม
     document.getElementById('main-menu').style.display = 'none';
     document.getElementById('game-container').style.display = 'block';
+    
+    // เริ่มต้นที่ Scene แรก
+    currentScene = 1; 
     renderScene();
 }
 
@@ -189,10 +195,14 @@ function renderScene() {
     document.getElementById('game-container').style.backgroundImage = `url('${scene.bg}')`;
     
     const charSprite = document.getElementById('character-sprite');
+    
+    // เช็คค่า showChar จากตัวแปรในแต่ละฉาก
     if (scene.showChar) {
         charSprite.style.display = 'block';
+        charSprite.style.opacity = '1';
     } else {
         charSprite.style.display = 'none';
+        charSprite.style.opacity = '0';
     }
 
     dialogueIndex = 0;

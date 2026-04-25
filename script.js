@@ -299,8 +299,15 @@ function showText(text, name) {
 
 function showChoices(choices) {
     const choiceCont = document.getElementById('choice-container');
+    const uiLayer = document.querySelector('.ui-layer'); // กล่องข้อความ
+    
     choiceCont.innerHTML = "";
     choiceCont.style.display = 'flex';
+
+    // ถ้าเป็นหน้าจอมือถือ ให้ซ่อนกล่องข้อความชั่วคราว
+    if (window.innerWidth <= 600) {
+        uiLayer.style.display = 'none';
+    }
 
     choices.forEach(c => {
         const div = document.createElement('div');
@@ -308,29 +315,27 @@ function showChoices(choices) {
         div.innerText = c.text;
         
         div.onclick = () => {
-            // 1. เก็บค่าตัวแปร (Drink / Snack)
-            // เช็คจากชื่อ Scene ปัจจุบัน
+            // เก็บค่า Drink / Snack
             if (currentScene === 5) {
-                selectedDrink = c.text; // เก็บชื่อเครื่องดื่มจากปุ่มที่กด
+                selectedDrink = c.text;
             } 
             else if (currentScene === 'choice_snack') {
-                selectedSnack = c.text; // เก็บชื่อขนมจากปุ่มที่กด
+                selectedSnack = c.text;
             }
 
-            // 2. ซ่อนกล่องตัวเลือกทันทีที่กด
+            // ซ่อนตัวเลือก และเอากล่องข้อความกลับมา
             choiceCont.style.display = 'none';
+            uiLayer.style.display = 'block';
 
-            // 3. จัดการการเปลี่ยนฉาก (Logic ของคุณ)
+            // จัดการการเปลี่ยนฉาก
             if (c.next === 'MENU') {
                 location.reload();
             } 
             else if (c.next === 'choice_drink') {
-                // ถ้าเลือกเครื่องดื่มเสร็จ ให้ไปหน้าถาม ร้อน/เย็น (choice_temp)
                 currentScene = 'choice_temp'; 
                 renderScene();
             }
             else {
-                // ไปยังฉากถัดไปตามที่ระบุใน next ของแต่ละปุ่ม
                 currentScene = c.next;
                 renderScene();
             }

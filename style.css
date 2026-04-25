@@ -150,3 +150,50 @@ position: absolute;
     pointer-events: none;
     display: none; /* จะโชว์เมื่อเจอ showChar: true */
 }
+
+/* --- การปรับแต่งสำหรับมือถือ (Screen width < 768px) --- */
+@media (max-width: 768px) {
+    /* 1. ปรับขนาดตัวละครไม่ให้ใหญ่ล้นหัว */
+    #character-sprite {
+        height: 70vh; /* ลดความสูงลงเพื่อให้เห็นหัวชัดขึ้นบนจอแคบ */
+        bottom: 5vh;  /* ขยับขึ้นจากขอบล่างเล็กน้อย */
+    }
+
+    /* 2. ปรับกล่องข้อความให้กว้างพอดีจอ */
+    .ui-layer {
+        width: 95% !important;
+        bottom: 20px !important;
+    }
+
+    #textbox {
+        padding: 15px;
+        min-height: 120px;
+    }
+
+    #text-content {
+        font-size: 1rem; /* ปรับขนาดอักษรให้พอดีสายตา */
+        line-height: 1.6;
+    }
+
+    /* 3. ปรับปุ่มตัวเลือกไม่ให้บังหน้าตัวละครมากเกินไป */
+    #choice-container {
+        width: 90%;
+        bottom: 35%; /* ขยับกลุ่มปุ่มขึ้นไปช่วงกลางจอ */
+    }
+
+    .choice-btn {
+        width: 100%; /* ให้ปุ่มขยายเต็มความกว้าง */
+        padding: 12px;
+        font-size: 0.9rem;
+        margin-bottom: 8px;
+    }
+
+    /* 4. หน้าเมนูหลัก (Main Menu) */
+    .logo-container {
+        max-width: 85%;
+    }
+    
+    .menu-buttons {
+        width: 200px;
+    }
+}

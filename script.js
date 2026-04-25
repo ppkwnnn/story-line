@@ -54,7 +54,8 @@ const gameData = {
     },
     'choice_temp': {
         bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
-        dialogue: { name: 'KY', text: 'เมนูนี้ดีเลยนะครับ แล้วอยากรับเป็นแบบร้อนรือเย็นดีครับ?' },
+        showChar: true,
+        dialogue: { name: 'KY', text: 'เมนูนี้ดีเลยนะครับ แล้วอยากรับเป็นแบบร้อนหรือเย็นดีครับ?' },
         choices: [
             { text: 'แบบร้อน', next: 'choice_snack' },
             { text: 'แบบเย็น', next: 'choice_snack' }
@@ -62,15 +63,19 @@ const gameData = {
     },
     'choice_snack': {
         bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
-        dialogue: { name: 'KY', text: 'ได้เลยครับ...แล้วรับขนมทานคู่กันทานเพิ่มด้วยไหมครับ??' },
+        showChar: true,
+        dialogue: { name: 'KY', text: 'ได้เลยครับ...แล้วรับขนมทานคู่กันเพิ่มด้วยไหมครับ??' },
         choices: [
-            { text: 'สตอเบอร์รี่ช๊อตเค้ก' },
-            { text: 'บลูชีสพาย' },
-            { text: 'ครัวซองต์' },
-            { text: 'โดนัทช็อกโกแลต' },
-            { text: 'แซนวิช' }
-        ],
+            { text: 'สตอเบอร์รี่ช๊อตเค้ก', next: 'confirm_order' },
+            { text: 'บลูชีสพาย', next: 'confirm_order' },
+            { text: 'ครัวซองต์', next: 'confirm_order' },
+            { text: 'โดนัทช็อกโกแลต', next: 'confirm_order' },
+            { text: 'แซนวิช', next: 'confirm_order' }
+        ]
+    },
+    'confirm_order': {
         bg: 'https://img2.pic.in.th/IMG_7830564ed53c7a0bceb1.md.jpeg',
+        showChar: true,
         dialogue: [
             { name: 'KY', text: 'ทวนรายการสักครู่นะครับ ของคุณลูกค้าจะเป็น [DRINK] กับ [SNACK] นะครับ' },
             { name: 'Y', text: 'ใช่ค่ะ ตามนี้เลย' },
@@ -301,17 +306,31 @@ function showChoices(choices) {
         const div = document.createElement('div');
         div.className = 'choice-btn';
         div.innerText = c.text;
+        
         div.onclick = () => {
-            if (c.val) {
-                if (currentScene === 5) selectedDrink = c.val;
-                if (currentScene === 'choice_snack') selectedSnack = c.val;
+            // 1. เก็บค่าตัวแปร (Drink / Snack)
+            // เช็คจากชื่อ Scene ปัจจุบัน
+            if (currentScene === 5) {
+                selectedDrink = c.text; // เก็บชื่อเครื่องดื่มจากปุ่มที่กด
+            } 
+            else if (currentScene === 'choice_snack') {
+                selectedSnack = c.text; // เก็บชื่อขนมจากปุ่มที่กด
             }
-            if (c.next === 'MENU') location.reload();
+
+            // 2. ซ่อนกล่องตัวเลือกทันทีที่กด
+            choiceCont.style.display = 'none';
+
+            // 3. จัดการการเปลี่ยนฉาก (Logic ของคุณ)
+            if (c.next === 'MENU') {
+                location.reload();
+            } 
             else if (c.next === 'choice_drink') {
-                currentScene = 'choice_temp';
+                // ถ้าเลือกเครื่องดื่มเสร็จ ให้ไปหน้าถาม ร้อน/เย็น (choice_temp)
+                currentScene = 'choice_temp'; 
                 renderScene();
             }
             else {
+                // ไปยังฉากถัดไปตามที่ระบุใน next ของแต่ละปุ่ม
                 currentScene = c.next;
                 renderScene();
             }

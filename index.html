@@ -9,16 +9,18 @@
 </head>
 <body>
 
-    <div id="main-menu">
-        <div class="credit-btn" onclick="alert('ผู้สร้าง: Gentle Steam Team')">?</div>
-        <img src="https://img2.pic.in.th/-181_20260411152816.md.png" alt="Logo" class="logo">
+    <div id="main-menu" class="game-container">
+        <button class="credit-btn" onclick="toggleCredit()">?</button>
+        <div class="logo-container">
+            <img src="https://img2.pic.in.th/-181_20260411152816.md.png" alt="Logo" class="logo">
+        </div>
         <div class="menu-buttons">
-            <button class="btn" onclick="startGame()">เริ่มเกม</button>
-            <button class="btn" onclick="alert('เร็วๆ นี้')">ดูหน้ารวมคำอวยพร</button>
+            <button class="btn btn-start" onclick="startGame()">START</button>
+            <button class="btn btn-wishboard" onclick="alert('เร็วๆ นี้')">Wishboard</button>
         </div>
     </div>
 
-    <div id="game-container">
+    <div id="game-container" style="display: none;">
         <img id="character-sprite" src="https://i.postimg.cc/L6cBkSbS/Screenshot-20250805-145639-com-hihonor-photos-Slot-Album-Activity-edit-21745861399566.png" >
 
         <div id="choice-container"></div>
@@ -31,6 +33,13 @@
         </div>
     </div>
     
+    <div id="creditOverlay" class="overlay" onclick="closeOverlay(event)">
+        <div class="credit-content">
+            <h2>ผู้สร้าง</h2>
+            <p>Gentle Steam Team</p>
+        </div>
+    </div>
+
     <script src="script.js"></script>
 </body>
 </html>

@@ -152,48 +152,63 @@ position: absolute;
 }
 
 /* --- การปรับแต่งสำหรับมือถือ (Screen width < 768px) --- */
-@media (max-width: 768px) {
+@media screen and (max-width: 768px) and (orientation: portrait) {
     /* 1. ปรับขนาดตัวละครไม่ให้ใหญ่ล้นหัว */
     #character-sprite {
-        height: 70vh; /* ลดความสูงลงเพื่อให้เห็นหัวชัดขึ้นบนจอแคบ */
-        bottom: 5vh;  /* ขยับขึ้นจากขอบล่างเล็กน้อย */
+        height: 65vh !important; /* ปรับความสูงตัวละครให้เหลือ 65% ของจอ */
+        bottom: 10% !important; /* ขยับขึ้นมาไม่ให้เท้าจม */
     }
 
-    /* 2. ปรับกล่องข้อความให้กว้างพอดีจอ */
+    /* 2. จัดระเบียบกล่องข้อความและชื่อ */
     .ui-layer {
-        width: 95% !important;
-        bottom: 20px !important;
+        width: 92% !important;
+        bottom: 15px !important;
+        left: 50% !important;
+        transform: translateX(-50%) !important;
+    }
+
+    #name-tag {
+        width: fit-content !important;
+        min-width: 100px;
+        bottom: calc(100% - 10px) !important; /* วางไว้บนขอบบนของกล่องข้อความ */
+        left: 10px !important;
+        transform: none !important;
+        font-size: 0.9rem !important;
+        padding: 5px 15px !important;
     }
 
     #textbox {
-        padding: 15px;
-        min-height: 120px;
+        padding: 20px 15px !important;
+        min-height: 120px !important;
+        font-size: 1rem !important;
+        line-height: 1.5 !important;
     }
 
-    #text-content {
-        font-size: 1rem; /* ปรับขนาดอักษรให้พอดีสายตา */
-        line-height: 1.6;
-    }
-
-    /* 3. ปรับปุ่มตัวเลือกไม่ให้บังหน้าตัวละครมากเกินไป */
+    /* 3. ปรับปุ่มตัวเลือก (Choices) ไม่ให้บังหน้าตัวละคร */
     #choice-container {
-        width: 90%;
-        bottom: 35%; /* ขยับกลุ่มปุ่มขึ้นไปช่วงกลางจอ */
+        width: 85% !important;
+        bottom: 45% !important; /* ขยับขึ้นไปช่วงอกตัวละคร */
+        gap: 10px !important;
     }
 
     .choice-btn {
-        width: 100%; /* ให้ปุ่มขยายเต็มความกว้าง */
-        padding: 12px;
-        font-size: 0.9rem;
-        margin-bottom: 8px;
+        padding: 12px !important;
+        font-size: 0.95rem !important;
     }
 
     /* 4. หน้าเมนูหลัก (Main Menu) */
     .logo-container {
-        max-width: 85%;
+        max-width: 90%;
     }
     
     .menu-buttons {
         width: 200px;
+    }
+    .narration-box {
+        width: 85% !important;
+        padding: 30px 20px !important;
+        font-size: 1.05rem !important;
+        max-height: 70vh;
+        overflow-y: auto; /* เผื่อกรณีเนื้อเรื่องยาวเกินไป */
     }
 }

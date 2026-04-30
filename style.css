@@ -63,43 +63,42 @@ html, body {
 /* --- Layer สำหรับจัดการตำแหน่งกล่องข้อความ --- */
 .ui-layer {
     position: absolute;
-    bottom: 30px;    /* ดันลงมาอยู่ด้านล่างสุด ห่างจากขอบ 30px */
-    width: 100%;
+    bottom: 30px; /* ระยะห่างจากขอบล่าง */
+    left: 50%;
+    transform: translateX(-50%);
+    width: 90%;
+    max-width: 900px; /* จำกัดความกว้างในคอม ไม่ให้ยาวเฟื้อยเหมือน image_1a765d.jpg */
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: flex-start; /* ให้ป้ายชื่อชิดซ้าย */
     z-index: 100;
 }
 
 /* ชื่อตัวละคร (Name Tag) */
 #name-tag {
-    align-self: flex-start;
-    margin-left: 7.5%;
-    margin-bottom: 8px;
-    font-weight: bold;
-    font-size: 1.2rem;
-    padding: 12px 40px;
     background: var(--cozy-brown);
     color: white;
-    border-radius: 30px;
-    cursor: pointer;
-    transition: 0.3s;
+    padding: 5px 25px;
+    border-radius: 10px 10px 0 0; /* มนแค่ด้านบน */
+    font-weight: bold;
+    width: fit-content; /* สำคัญ: ให้กว้างเท่าตัวอักษร ไม่ยาวพาดจอ */
+    margin-left: 10px;
+    border: 2px solid #795548;
+    border-bottom: none;
+    position: relative;
+    bottom: -2px; /* ให้เกยทับขอบกล่องข้อความนิดหน่อย */
 }
 
 /* กล่องข้อความ (Textbox) */
 #textbox {
-    width: 85%;
-    min-height: 160px;
-    background: var(--glass-white); /* 85% ที่คุณตั้งไว้ */
-    padding: 30px 45px;
-    border-radius: 25px; /* มนสวยงามตามรูป 4.jpg */
-    color: var(--cozy-brown);
-    font-size: 1.2rem;
-    line-height: 1.7;
-    cursor: pointer;
-    box-shadow: 0 4px 20px rgba(0,0,0,0.05);
-    border: none;
-    box-sizing: border-box;
+    background: var(--glass-white);
+    border: 2px solid #795548;
+    border-radius: 0 15px 15px 15px; /* มนยกเว้นมุมบนซ้ายที่ติดกับป้ายชื่อ */
+    padding: 20px;
+    width: 100%;
+    min-height: 120px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+    box-sizing: border-box; /* ป้องกันกล่องบวมล้นจอ */
 }
 
 /* --- ส่วนของตัวเลือก (Choices) --- */
@@ -155,40 +154,31 @@ position: absolute;
 @media screen and (max-width: 768px) and (orientation: portrait) {
     /* 1. ปรับขนาดตัวละครไม่ให้ใหญ่ล้นหัว */
     #character-sprite {
-        height: 65vh !important; /* ปรับความสูงตัวละครให้เหลือ 65% ของจอ */
-        bottom: 10% !important; /* ขยับขึ้นมาไม่ให้เท้าจม */
+        height: 70vh !important; /* ย่อตัวละครไม่ให้บังหน้าในแนวตั้ง */
+        bottom: 0 !important;
     }
 
     /* 2. จัดระเบียบกล่องข้อความและชื่อ */
     .ui-layer {
-        width: 92% !important;
+        width: 95% !important;
         bottom: 15px !important;
-        left: 50% !important;
-        transform: translateX(-50%) !important;
     }
 
     #name-tag {
-        width: fit-content !important;
-        min-width: 100px;
-        bottom: calc(100% - 10px) !important; /* วางไว้บนขอบบนของกล่องข้อความ */
-        left: 10px !important;
-        transform: none !important;
-        font-size: 0.9rem !important;
-        padding: 5px 15px !important;
+        font-size: 0.9rem;
+        padding: 4px 15px;
     }
 
     #textbox {
-        padding: 20px 15px !important;
-        min-height: 120px !important;
-        font-size: 1rem !important;
-        line-height: 1.5 !important;
+        padding: 15px;
+        min-height: 100px;
+        font-size: 1rem; /* ขนาดตัวอักษรอ่านง่ายบนมือถือ */
     }
 
     /* 3. ปรับปุ่มตัวเลือก (Choices) ไม่ให้บังหน้าตัวละคร */
     #choice-container {
-        width: 85% !important;
-        bottom: 45% !important; /* ขยับขึ้นไปช่วงอกตัวละคร */
-        gap: 10px !important;
+        width: 85%;
+        bottom: 45%; /* ขยับปุ่มเลือกขึ้นไปกลางจอ ไม่ให้ทับกล่องข้อความ */
     }
 
     .choice-btn {

@@ -299,46 +299,24 @@ function showText(text, name) {
 
 function showChoices(choices) {
     const choiceCont = document.getElementById('choice-container');
-    const uiLayer = document.querySelector('.ui-layer'); // กล่องข้อความ
+    const uiLayer = document.querySelector('.ui-layer'); // ส่วนกล่องข้อความและชื่อ
+    
+    // 1. ซ่อนกล่องข้อความทั้งหมดเมื่อต้องเลือก (ป้องกันภาพแบบ image_1a761d.jpg)
+    uiLayer.style.visibility = 'hidden'; 
     
     choiceCont.innerHTML = "";
     choiceCont.style.display = 'flex';
-
-    // ถ้าเป็นหน้าจอมือถือ ให้ซ่อนกล่องข้อความชั่วคราว
-    if (window.innerWidth <= 600) {
-        uiLayer.style.display = 'none';
-    }
 
     choices.forEach(c => {
         const div = document.createElement('div');
         div.className = 'choice-btn';
         div.innerText = c.text;
-        
         div.onclick = () => {
-            // เก็บค่า Drink / Snack
-            if (currentScene === 5) {
-                selectedDrink = c.text;
-            } 
-            else if (currentScene === 'choice_snack') {
-                selectedSnack = c.text;
-            }
-
-            // ซ่อนตัวเลือก และเอากล่องข้อความกลับมา
             choiceCont.style.display = 'none';
-            uiLayer.style.display = 'block';
-
-            // จัดการการเปลี่ยนฉาก
-            if (c.next === 'MENU') {
-                location.reload();
-            } 
-            else if (c.next === 'choice_drink') {
-                currentScene = 'choice_temp'; 
-                renderScene();
-            }
-            else {
-                currentScene = c.next;
-                renderScene();
-            }
+            // 2. แสดงกล่องข้อความกลับมา
+            uiLayer.style.visibility = 'visible'; 
+            currentScene = c.next;
+            renderScene();
         };
         choiceCont.appendChild(div);
     });
